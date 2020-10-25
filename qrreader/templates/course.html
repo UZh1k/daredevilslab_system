@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    th, td {
+      padding: 15px;
+    }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+    function addUser(lesson_id,  client_id){
+        $.ajax({
+            type: "GET",
+            url: '/{{ course.id }}',
+            data: {
+                "lesson_id": lesson_id,
+                "client_id": client_id,
+            },
+            dataType: "json",
+            success: function (data) {
+                // any process in data
+                alert("successful")
+            },
+            failure: function () {
+                alert("failure");
+            }
+        });
+        document.getElementById("form_add_user").submit();
+    }
+    </script>
+
+</head>
+<body>
+    <main>
+        <div align="center">
+            <form method="get" id="form_add_user">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <th>
+                            Студенты
+                        </th>
+                        {% for lesson in course.lessons.all %}
+                            <th>
+
+                                <a href="/lesson/{{ lesson.id }}">{{ lesson.date|date:"d.m.y" }}</a>
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    {% for client in course.clients.all %}
+                        <tr>
+                            <th>
+                                {{ client }}
+                            </th>
+                            {% for lesson in course.lessons.all %}
+                                <td class="check" onclick="addUser({{lesson.id}}, {{client.id}})">
+                                    {% if client in lesson.clients_came.all %}
+                                        *
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

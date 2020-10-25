@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ul>
+        {% for client in lesson.clients_came.all %}
+            <li>
+                {{client}}
+            </li>
+        {% endfor %}
+    </ul>
+    {% load qr_code %}
+    {% qr_from_text website|add:lesson.url size="h" %}
+<h1>
+    {{ website|add:lesson.url }}
+</h1>
+</body>
+</html>
