@@ -13,9 +13,9 @@
         {% endfor %}
     </ul>
     {% load qr_code %}
-    {% qr_from_text website|add:lesson.url size="h" %}
+    {% qr_from_text request.get_host|add:'/'|add:lesson.url size="h" %}
 <h1>
-    {{ website|add:lesson.url }}
+    {{ request.get_host|add:'/'|add:lesson.url }}
 </h1>
 </body>
 </html>
