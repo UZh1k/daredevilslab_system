@@ -4,73 +4,105 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-      text-align: center;
-    }
-    th, td {
-      padding: 15px;
-    }
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          text-align: center;
+        }
+        th, td {
+          padding: 15px;
+        }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
-    function addUser(lesson_id,  client_id){
-        $.ajax({
-            type: "GET",
-            url: '/{{ course.id }}',
-            data: {
-                "lesson_id": lesson_id,
-                "client_id": client_id,
-            },
-            dataType: "json",
-            success: function (data) {
-                // any process in data
-                alert("successful")
-            },
-            failure: function () {
-                alert("failure");
-            }
-        });
-        document.getElementById("form_add_user").submit();
-    }
+        function addUser(lesson_id,  client_id){
+            $.ajax({
+                type: "GET",
+                url: '/{{ course.id }}',
+                data: {
+                    "lesson_id": lesson_id,
+                    "client_id": client_id,
+                },
+                dataType: "json",
+                success: function (data) {
+                    // any process in data
+                    alert("successful")
+                },
+                failure: function () {
+                    alert("failure");
+                }
+            });
+            document.getElementById("form_add_user").submit();
+        }
     </script>
 
 </head>
 <body>
     <main>
-        <div align="center">
-            <form method="get" id="form_add_user">
-                {% csrf_token %}
-                <table>
+        <a href="/">
+            <h2>
+                Вернуться к курсам
+            </h2>
+        </a>
+        <form method="get" id="form_add_user">
+            <table>
+                <tr>
+                    <th>
+                        Студенты
+                    </th>
+                    {% for lesson in course.lessons.all %}
+                        <th>
+
+                            <a href="/lesson/{{ lesson.id }}">{{ lesson.date|date:"d.m.y" }}</a>
+                        </th>
+                    {% endfor %}
+                </tr>
+                {% for client in course.client_set.all %}
                     <tr>
                         <th>
-                            Студенты
+                            {{ client }}
                         </th>
                         {% for lesson in course.lessons.all %}
-                            <th>
-
-                                <a href="/lesson/{{ lesson.id }}">{{ lesson.date|date:"d.m.y" }}</a>
-                            </th>
+                            <td class="check" onclick="addUser({{lesson.id}}, {{client.id}})">
+                                {% if client not in lesson.clients_came.all %}
+                                    Н
+                                {% endif %}
+                            </td>
                         {% endfor %}
                     </tr>
-                    {% for client in course.clients.all %}
-                        <tr>
-                            <th>
-                                {{ client }}
-                            </th>
-                            {% for lesson in course.lessons.all %}
-                                <td class="check" onclick="addUser({{lesson.id}}, {{client.id}})">
-                                    {% if client in lesson.clients_came.all %}
-                                        *
-                                    {% endif %}
-                                </td>
-                            {% endfor %}
-                        </tr>
+                {% endfor %}
+            </table>
+        </form>
+        <br/><br/><br/>
+        <h2>Добавить урок</h2>
+        <form method="post" id="add_lesson">
+            {% csrf_token %}
+            <label for="date">Дата урока</label>
+                <input id="date" name="date" type="date">
+            <button type="submit">Добавить урок</button>
+            <input type="hidden" name="form_type" value="add_lesson">
+        </form>
+        <br/><br/><br/>
+        <h2>Добавить пользователя</h2>
+        <form method="post" id="add_client">
+            {% csrf_token %}
+            <label for="new_client">Преподаватель</label>
+                <select id="new_client" name="new_client">
+                    {% for client in clients %}
+                        {% if client not in course.client_set.all %}
+                            <option value="{{ client.id }}">{{ client.user.first_name }} {{ client.user.last_name }}</option>
+                        {% endif %}
                     {% endfor %}
-                </table>
-            </form>
-        </div>
+                </select>
+            <button type="submit">Добавить студента</button>
+            <input type="hidden" name="form_type" value="add_client">
+        </form>
+        <br/><br/><br/>
+        <a href="/client_list">
+            <h2>
+                Просмотр пользователей
+            </h2>
+        </a>
     </main>
 
 </body>

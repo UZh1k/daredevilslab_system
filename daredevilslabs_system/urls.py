@@ -21,6 +21,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from qrreader.views import *
 
 urlpatterns = [
+    path('', main),
+    path('client_list', client_list),
     path('admin/', admin.site.urls),
     path('<int:course_id>', course),
     path('lesson/<int:lesson_id>', lesson),

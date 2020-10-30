@@ -3,8 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          text-align: center;
+        }
+        th, td {
+          padding: 15px;
+        }
+    </style>
 </head>
 <body>
-
+    <main>
+        <a href="/">
+            <h2>
+                Вернуться к курсам
+            </h2>
+        </a>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Логин
+                    </th>
+                    <th>
+                        Фамилия
+                    </th>
+                    <th>
+                        Имя
+                    </th>
+                    <th>
+                        Курсы
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                    <tr>
+                        <td>
+                            {{ client.user.username }}
+                        </td>
+                        <td>
+                            {{ client.user.first_name }}
+                        </td>
+                        <td>
+                            {{ client.user.last_name }}
+                        </td>
+                        <td>
+                            {% for course in client.courses.all %}
+                                <a href="/{{ course.id }}">
+                                    {{ course }}
+                                </a>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table><br/><br/><br/>
+        <form method="post">
+            {% csrf_token %}
+            <label for="first_name">Имя</label>
+                <input id="first_name" name="first_name" type="text"><br/><br/>
+            <label for="last_name">Фамилия</label>
+                <input id="last_name" name="last_name" type="text"><br/><br/>
+            <label for="username">Логин</label>
+                <input id="username" name="username" type="text"><br/><br/>
+            <label for="course">Преподаватель</label>
+                <select id="course" name="course">
+                    {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.title }}</option>
+                    {% endfor %}
+                </select><br/><br/>
+            <button type="submit">Создать пользователя</button>
+        </form>
+    </main>
 </body>
 </html>

@@ -8,8 +8,8 @@
 
     <form method="post">
         {% csrf_token %}
+        <label for="login">Имя пользователя</label>
         <input id="login" name="username" type="text">
-            <label for="login">Имя пользователя</label>
 <!--        <input id="password" name="password" type="password">-->
 <!--            <label for="password">Пароль</label>-->
         <button type="submit">Войти</button>

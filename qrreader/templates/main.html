@@ -3,8 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          text-align: center;
+        }
+        th, td {
+          padding: 15px;
+        }
+    </style>
 </head>
 <body>
-
+    <main>
+        <div>
+            <h2>Курсы</h2>
+            <ul>
+                {% for course in courses %}
+                    <li>
+                        <h3>
+                            <a href="/{{ course.id }}">{{ course }}</a> - Преподаватель: {{ course.teacher.first_name }} {{ course.teacher.last_name }}
+                        </h3>
+                    </li>
+                {% endfor %}
+            </ul>
+            <br/><br/><br/>
+            <h2>Добавить курс</h2>
+            <form method="post">
+                {% csrf_token %}
+                <label for="title">Название курса</label>
+                    <input id="title" name="title" type="text"><br/><br/>
+                <label for="value">Стоимость занятия</label>
+                    <input id="value" name="value" type="number"><br/><br/>
+                <label for="teacher">Курс</label>
+                <select id="teacher" name="teacher">
+                    {% for user in users %}
+                        {% if user.is_superuser %}
+                            <option value="{{ user.username }}">{{ user.first_name }} {{ user.last_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select><br/><br/>
+                <button type="submit">Добавить курс</button>
+            </form>
+        </div>
+        <br/><br/><br/>
+        <a href="/client_list">
+            <h2>
+                Просмотр пользователей
+            </h2>
+        </a>
+    </main>
 </body>
 </html>
