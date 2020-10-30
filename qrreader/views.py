@@ -9,6 +9,8 @@ website = '127.0.0.1:8000/'
 def main(request):
     courses = Course.objects.all()
     users = User.objects.all()
+    if not request.user.is_superuser:
+        return redirect('/admin')
     if request.method == "POST":
         title = request.POST["title"]
         value = request.POST["value"]
