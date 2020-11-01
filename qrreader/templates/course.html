@@ -86,7 +86,7 @@
         <h2>Добавить пользователя</h2>
         <form method="post" id="add_client">
             {% csrf_token %}
-            <label for="new_client">Преподаватель</label>
+
                 <select id="new_client" name="new_client">
                     {% for client in clients %}
                         {% if client not in course.client_set.all %}

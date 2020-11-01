@@ -3,7 +3,6 @@ from .models import *
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseNotFound
 
-website = '127.0.0.1:8000/'
 
 
 def main(request):
@@ -13,10 +12,9 @@ def main(request):
         return redirect('/admin')
     if request.method == "POST":
         title = request.POST["title"]
-        value = request.POST["value"]
         teacher = request.POST["teacher"]
         teacher = User.objects.get(username=teacher)
-        course = Course.objects.create(title=title, value=value, teacher=teacher)
+        course = Course.objects.create(title=title, teacher=teacher)
     return render(request, 'main.html', {'courses': courses,
                                          'users': users,
                                          })
@@ -51,7 +49,6 @@ def client_list(request):
 def lesson(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     return render(request, 'lesson.html', {'lesson': lesson,
-                                           'website': website,
                                            })
 
 
