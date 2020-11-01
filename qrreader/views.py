@@ -24,7 +24,6 @@ def client_list(request):
     clients = Client.objects.all()
     courses = Course.objects.all()
     if request.method == "POST":
-        print(request.POST)
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         course_id = request.POST["course"]
@@ -74,14 +73,12 @@ def course(request, course_id):
                                                    })
 
     if request.method == "POST" and request.POST.get("form_type") == "add_lesson":
-        print(request.POST)
         date = request.POST["date"]
         lesson = Lesson.objects.create(date=date, course=course)
         lesson.generate_url()
         lesson.save()
 
     if request.method == "POST" and request.POST.get("form_type") == "add_client":
-        print(request.POST)
         client_id = request.POST["new_client"]
         client = Client.objects.get(id=client_id)
         course.client_set.add(client)
