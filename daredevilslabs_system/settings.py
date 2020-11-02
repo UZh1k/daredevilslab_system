@@ -78,8 +78,11 @@ WSGI_APPLICATION = 'daredevilslabs_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'u1201260_default',
+        'USER': 'u1201260_default',
+        'PASSWORD': 'F5l_zNZH',
+        'HOST': 'localhost',
     }
 }
 
@@ -127,6 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
