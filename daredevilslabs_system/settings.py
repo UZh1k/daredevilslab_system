@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'daredevilslabs_system.qrreader',
+    'qrreader',
     'qr_code',
 ]
 
